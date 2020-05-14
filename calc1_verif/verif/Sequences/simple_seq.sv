@@ -13,7 +13,7 @@ class calc_simple_seq extends calc_base_seq;
       // Za sada je sekvenca jako jednostavna i vrlo verovatno ce biti
       // promenjena u buducnosti
       for (int i = 0; i < 100; i++) begin
-	 `uvm_do_with(req, { req.command == 1; })
+	  `uvm_do_with(req, { req.command == 1 || req.command == 2 || req.command == 5 || req.command == 6;})
       end
    endtask : body
 
