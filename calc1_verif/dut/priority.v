@@ -23,34 +23,42 @@ module priority ( prio_alu1_in_cmd, prio_alu1_in_req_id, prio_alu1_out_req_id, p
    reg 	prio_alu1_out_vld_q, prio_alu2_out_vld_q;
 
    always
-     @ (negedge c_clk) begin
-	fork
-	   delay1 <= prio_alu1_out_vld_q;
-	   delay2 <= prio_alu2_out_vld_q;
-	   
-	   cmd1[0:3] <= 
-			(hold1_prio_req[0:3] != 4'b0) ? hold1_prio_req[0:3] :
-			(cmd1_reset) ? 4'b0 :
-			cmd1[0:3];
-	   
-	   cmd2[0:3] <=
-		       (hold2_prio_req[0:3] != 4'b0) ? hold2_prio_req[0:3] :
-		       (cmd2_reset) ? 4'b0 :
-		       cmd2[0:3];
-	   
-	   cmd3[0:3] <=
-		       (hold3_prio_req[0:3] != 4'b0) ? hold3_prio_req[0:3] :
-		       (cmd3_reset) ? 4'b0 :
-		       cmd3[0:3];
-	   
-	   cmd4[0:3] <=
-		       (hold4_prio_req[0:3] != 4'b0) ? hold4_prio_req[0:3] :
-		       (cmd4_reset) ? 4'b0 :
-		       cmd4[0:3];
-	join
+     @ (posedge c_clk) begin
+	if (reset[1]) begin
+	   cmd1 <= 0;
+	   cmd2 <= 0;
+	   cmd3 <= 0;
+	   cmd4 <= 0;
+	end
+	else begin
+	   fork
+	      delay1 <= prio_alu1_out_vld_q;
+	      delay2 <= prio_alu2_out_vld_q;
+	      
+	      cmd1[0:3] <= 
+			   (hold1_prio_req[0:3] != 4'b0) ? hold1_prio_req[0:3] :
+			   (cmd1_reset) ? 4'b0 :
+			   cmd1[0:3];
+	      
+	      cmd2[0:3] <=
+			  (hold2_prio_req[0:3] != 4'b0) ? hold2_prio_req[0:3] :
+			  (cmd2_reset) ? 4'b0 :
+			  cmd2[0:3];
+	      
+	      cmd3[0:3] <=
+			  (hold3_prio_req[0:3] != 4'b0) ? hold3_prio_req[0:3] :
+			  (cmd3_reset) ? 4'b0 :
+			  cmd3[0:3];
+	      
+	      cmd4[0:3] <=
+			  (hold4_prio_req[0:3] != 4'b0) ? hold4_prio_req[0:3] :
+			  (cmd4_reset) ? 4'b0 :
+			  cmd4[0:3];
+	   join
+	end
 	
 	   
-     end // always @ (negedge c_clk)
+     end // always @ (posedge c_clk)
 
      always
      @ (delay1 or delay2 or cmd1 or cmd2 or cmd3 or cmd4) begin

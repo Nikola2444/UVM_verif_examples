@@ -6,11 +6,11 @@ module calc_verif_top;
    import calc_test_pkg::*;
 
    logic clk;
-   logic [6 : 0] rst;
+   logic [6 : 0] rst = 0;
 
    // interface
    calc_if calc_vif(clk, rst);
-
+   
    // DUT
    calc_top DUT(
                 .c_clk        ( clk ),
@@ -34,16 +34,18 @@ module calc_verif_top;
                 );
 
    // run test
-   initial begin      
+   initial begin     
       uvm_config_db#(virtual calc_if)::set(null, "uvm_test_top.env", "calc_if", calc_vif);
       run_test();
    end
-
    // clock and reset init.
    initial begin
-      clk <= 0;
-      rst <= 1;
-      #50 rst <= 0;
+      clk <= 1;                  
+      rst <= 7'h7f;
+      for (int i = 0; i < 8; i++) begin
+	 @(posedge clk);
+      end
+      rst <= 0;
    end
 
    // clock generation

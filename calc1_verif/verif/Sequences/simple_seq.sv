@@ -10,8 +10,11 @@ class calc_simple_seq extends calc_base_seq;
    endfunction
 
    virtual task body();
-      // simple example - just send one item
-      `uvm_do(req);
+      // Za sada je sekvenca jako jednostavna i vrlo verovatno ce biti
+      // promenjena u buducnosti
+      for (int i = 0; i < 100; i++) begin
+	 `uvm_do_with(req, { req.command == 1; })
+      end
    endtask : body
 
 endclass : calc_simple_seq

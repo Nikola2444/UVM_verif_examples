@@ -18,7 +18,7 @@
    reg [0:31] 	 hold_data1_q, hold_data2_q;
    
    always 
-     @ (negedge c_clk) begin
+     @ (posedge c_clk) begin
 	fork
 	   
 	   cmd_hold[0:3] <= (reset[1] == 1) ?  4'b0 : req_cmd_in[0:3];
@@ -30,7 +30,7 @@
    
 
    always
-     @ (negedge c_clk) begin
+     @ (posedge c_clk) begin
 	fork
 	   hold_data1_q[0:31] <= 
 				 (reset[1]) ? 32'b0 : 
