@@ -29,7 +29,7 @@ class virtual_seq extends calc_base_seq;
 	
 	    interface4_seq.start(interface4_seqr);
 
-	join_none
+	join
 	
     endtask : body
 

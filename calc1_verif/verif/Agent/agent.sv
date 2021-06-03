@@ -26,7 +26,7 @@ class calc_agent extends uvm_agent;
          `uvm_fatal("NOCONFIG",{"Config object must be set for: ",get_full_name(),".cfg"})
        /*****************************************************************/
        
-       /************Setting to configuration database********************/
+       /************xcSetting to configuration database********************/
        uvm_config_db#(virtual calc_if)::set(this, "*", "calc_if", vif);
        /*****************************************************************/
        

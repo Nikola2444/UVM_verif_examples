@@ -9,8 +9,8 @@ class calc_driver extends uvm_driver#(calc_seq_item);
    bit [6 : 0] reset_system = 127;
    bit [6 : 0] un_reset_system = 0;
    
-   typedef enum {send_op_and_cmd, send_op2, wait_for_resp} driving_stages;
-   driving_stages calc_driving_stages = send_op_and_cmd;
+   typedef enum {send_op1_and_cmd, send_op2, wait_for_resp} driving_stages;
+   driving_stages calc_driving_stages = send_op1_and_cmd;
    
    function new(string name = "calc_driver", uvm_component parent = null);
        super.new(name,parent);
@@ -34,13 +34,13 @@ class calc_driver extends uvm_driver#(calc_seq_item);
                      $sformatf("Driver sending...\n%s", req.sprint()),
                      UVM_LOW)
 	   //State machine neophodan kako bi se ispostovao
-	   //nacin slanja operanada i komande opisan u
+	   //protokol slanja operanada i komande opisan u
 	   //materijalu za vezbe
            @(posedge vif.clk);
 	   #1 // Ovo ce u buducnosti biti reseno sa block-ing clock-om
 	     if (vif.rst != 7'h7f) begin	       
 		 case (calc_driving_stages)
-		     send_op_and_cmd: begin	
+		     send_op1_and_cmd: begin	
 			 if(vif.out_resp == 2'b00)begin
 			     vif.req_cmd_in = req.command;
 			     vif.req_data_in = req.operand1;
@@ -54,7 +54,7 @@ class calc_driver extends uvm_driver#(calc_seq_item);
 		     end
 		     wait_for_resp: begin
 			 if (vif.out_resp == 1) begin
-			     calc_driving_stages = send_op_and_cmd;
+			     calc_driving_stages = send_op1_and_cmd;
 			 end
 		     end
 		 endcase; // case (calc_driving_stages)	       	       
